@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Cuku Cafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: 'Outfit', sans-serif; margin: 0; }
+        nav { padding: 20px; background: #111; display: flex; justify-content: center; gap: 20px; }
+        nav a { color: #fff; text-decoration: none; font-weight: bold; }
+        .content { max-width: 800px; margin: 100px auto; padding: 20px; line-height: 1.8; text-align: center; background: #151515; border-radius: 20px; border: 1px solid #333; }
+        h2 { color: #e67e22; font-size: 2.5rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="content">
+        <h2>Hamari Kahani</h2>
+        <p>Peace Road, Lalpur mein sukoon ka dusra naam hai Cuku Cafe. Ranchi ke students aur coffee lovers ke liye ye ek aisi jagah hai jahan yaadein banti hain.</p>
+        <p><i>"Aapka swagat hai hamare digital ghar mein."</i></p>
+    </div>
+</body>
+</html>
