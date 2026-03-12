@@ -2,260 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spicy Birthday Surprise | Mikey's Gift</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ramya's Special Day</title>
     <style>
-        :root {
-            --primary: #00d4ff; /* Neon Blue */
-            --spicy: #ff4500; /* Chili Red */
-            --bg: #05080a;
-            --card-bg: rgba(0, 212, 255, 0.05);
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #050505; 
+            color: #fff; 
+            height: 100vh; 
+            width: 100vw; 
+            overflow: hidden; 
+            font-family: 'Outfit', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            overflow-x: hidden;
-            cursor: crosshair;
+        .stars-container {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #050505 100%);
+            z-index: -1;
         }
 
-        /* Particles Canvas */
-        #canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1; 
-            pointer-events: none;
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--d) infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
+
+        #intro {
+            position: fixed; inset: 0; background: #000; display: flex; justify-content: center;
+            align-items: center; z-index: 2000;
+        }
+        .intro-msg { 
+            font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #ff85a2; 
+            text-shadow: 0 0 20px rgba(255, 133, 162, 0.5);
+            animation: introFade 3.5s forwards; 
+        }
+        @keyframes introFade { 
+            0% { opacity:0; transform: translateY(20px); } 
+            30%, 70% { opacity:1; transform: translateY(0); } 
+            100% { opacity:0; transform: scale(1.1); visibility:hidden; } 
         }
 
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        .page { 
+            position: absolute; inset: 0; display: none; flex-direction: column; 
+            justify-content: center; align-items: center; padding: 30px; text-align: center;
+        }
+        .page.active { display: flex; animation: smoothReveal 0.8s ease-out forwards; }
+        @keyframes smoothReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dream-card {
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 133, 162, 0.2);
+            backdrop-filter: blur(20px); padding: 30px 20px; border-radius: 30px;
+            width: 100%; max-width: 380px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         }
 
-        h1 {
-            font-size: clamp(2rem, 8vw, 4rem);
-            color: var(--primary);
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-            margin-bottom: 20px;
+        .main-btn {
+            background: linear-gradient(45deg, #ff85a2, #ff4d6d); color: #fff; border: none;
+            padding: 15px 35px; border-radius: 100px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: 0.3s; margin-top: 20px;
         }
 
-        .story-text {
-            max-width: 700px;
-            font-family: sans-serif;
-            line-height: 1.8;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            backdrop-filter: blur(5px);
-            margin-bottom: 30px;
+        /* CAKE ANIMATION FIXED */
+        .cake-display { position: relative; width: 200px; height: 150px; margin: 20px 0; display: none; }
+        .cake-layer { 
+            width: 140px; height: 70px; background: #fff; border-radius: 10px; 
+            position: absolute; bottom: 0; left: 30px; border-top: 10px solid #ff85a2;
+            transition: 0.5s;
+        }
+        /* Cake cut effect */
+        .cake-layer.cut::after {
+            content: ''; position: absolute; left: 50%; top: 0; width: 4px; height: 100%;
+            background: rgba(0,0,0,0.2); transform: translateX(-50%);
         }
 
-        .chili-icon {
-            font-size: 50px;
-            color: var(--spicy);
-            animation: chili-wobble 1s ease-in-out infinite;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 15px;
+        .candle { width: 8px; height: 25px; background: #ffd32a; position: absolute; top: 45px; left: 96px; border-radius: 4px; z-index: 2; }
+        .flame { width: 12px; height: 18px; background: #ff4d00; position: absolute; top: -18px; left: -2px; border-radius: 50%; animation: flicker 0.3s infinite; }
+        
+        .knife-img { 
+            position: absolute; width: 70px; right: -100px; top: 40px; 
+            opacity: 0; z-index: 10; filter: drop-shadow(0 0 5px #fff) invert(1); 
+        }
+        
+        @keyframes knifeCutAction {
+            0% { right: -100px; top: 20px; opacity: 1; transform: rotate(-20deg); }
+            40% { right: 60px; top: 20px; transform: rotate(0deg); }
+            70% { right: 60px; top: 90px; transform: rotate(10deg); } /* Cutting motion down */
+            100% { right: 10px; top: 100px; opacity: 0; }
         }
 
-        @keyframes chili-wobble {
-            0%, 100% { transform: rotate(-10deg); }
-            50% { transform: rotate(10deg); }
-        }
+        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.2); } }
+        .flower { position: fixed; pointer-events: none; z-index: 100; font-size: 24px; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 3000; flex-direction: column; justify-content: center; align-items: center; padding: 25px; }
 
-        .spicy-wish {
-            font-size: 1.2rem;
-            color: var(--spicy);
-            text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
-        }
-
-        .gift-box {
-            font-size: 80px;
-            margin: 30px;
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-        }
-
-        .gift-box:active { transform: scale(0.8); }
-
-        .btn {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 15px 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            background: var(--primary);
-            color: black;
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        /* About Popup */
-        #aboutModal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: #0a1118;
-            padding: 30px;
-            border: 2px solid var(--primary);
-            z-index: 100;
-            width: 90%; max-width: 450px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 90;
-        }
-
-        .close-btn { float: right; cursor: pointer; color: var(--primary); }
+        /* ARTICLE STYLE */
+        .article-box { text-align: left; max-height: 300px; overflow-y: auto; padding-right: 10px; margin: 15px 0; }
+        .article-box::-webkit-scrollbar { width: 4px; }
+        .article-box::-webkit-scrollbar-thumb { background: #ff85a2; border-radius: 10px; }
+        .article-title { font-family: 'Dancing Script'; font-size: 1.8rem; color: #ff85a2; margin-bottom: 10px; text-align: center;}
     </style>
 </head>
-<body onclick="spawnParticles(event)">
+<body>
 
-    <canvas id="canvas"></canvas>
+    <div class="stars-container" id="stars"></div>
+    <div id="intro"><h1 class="intro-msg">wellcome ramya my world.</h1></div>
 
-    <section>
-        <p style="letter-spacing: 5px; opacity: 0.7;">INITIALIZING BIRTHDAY.EXE...</p>
-        <h1>Happy Birthday!</h1>
-        <p>Tap anywhere for Magic ✨</p>
-        <p style="margin-top: 50px; font-size: 0.8rem; opacity: 0.5;">Scroll Down to Continue Quest</p>
-    </section>
+    <div class="page" id="p1">
+        <h2 style="font-family:'Dancing Script'; font-size: 2.4rem; margin-bottom: 35px; color: #ff85a2;">Chalo Magic Shuru Karein?</h2>
+        <button id="catch-btn" class="main-btn" onclick="scramble()">Yaha Click Karo</button>
+    </div>
 
-    <section>
-        <div class="story-text">
-            <h2 style="color: var(--primary); margin-bottom: 15px;">Random Match, Real Vibe 🎮</h2>
-            <p>
-                Server Connect Success! Aaj hi hum ek game lobby mein mile, strangers banke. Kuch calls, kuch clutch moves, aur pata chala aaj tumhara birthday hai! Gaming world mein dost banna toh aam hai, par aise mauke pe milna Level 100 luck hai. May your ping be low and your happiness always be 999+!
-            </p>
+    <div class="page" id="p2">
+        <div class="dream-card">
+            <h2 class="article-title">A Piece of My Heart</h2>
+            <div class="article-box">
+                <p style="font-size: 0.95rem; line-height: 1.7; color: #eee;">
+                    <b>Ramya,</b><br><br>
+                    Aap un sitaron ki tarah ho jo asmaan mein sabse zyada chamakte hain. Aapka baat karne ka tareeka, wo pyari si muskurahat, aur aapka ye "Travel Enthusiast" wala jazba... sach mein bohot kamaal hai!<br><br>
+                    Suna hai aapko duniya ghoomne ka shauk hai, aur mera maanna hai ki ye duniya bhi aapko dekhne ke liye utawli hogi. Aap jahan bhi jate ho, wahan khushiyan khud-ba-khud bikher dete ho. Aap jaisa insaan milna naseeb ki baat hoti hai. <br><br>
+                    Bas dua hai ki aapka har ek din is birthday ki tarah haseen ho aur aapki har wish puri ho!
+                </p>
+            </div>
+            <button class="main-btn" onclick="startCinematic()">Next Magic ✨</button>
         </div>
-    </section>
+    </div>
 
-    <section>
-        <div class="story-text">
-            <h2 style="color: var(--spicy); margin-bottom: 15px;">Spicy Birthday Wish! 🔥</h2>
-            <p class="spicy-wish">
-                <span class="chili-icon">🌶️</span>
-                Sunne mein aaya hai tumhe spicy food bohot pasand hai! Toh bas meri bhi yahi wish hai ki yeh naya saal tumhari life mein dher saara "masaaledaar" fun, excitement aur magic lekar aaye! May your days be as fiery and full of flavor as your favorite dish! <span class="chili-icon">🌶️</span>
-            </p>
+    <div class="page" id="p3">
+        <h1 id="happy-title" style="font-family:'Dancing Script'; font-size: 3rem; color: #ff85a2; opacity: 0; transition: 1.5s;">Happy Birthday!</h1>
+        
+        <div class="cake-display" id="cake-ui">
+            <div class="cake-layer" id="cake-body"></div>
+            <div class="candle" id="candle-obj"><div class="flame" id="flame-ui"></div></div>
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/knife.png" class="knife-img" id="knife-ui">
         </div>
-    </section>
+        
+        <p id="magic-text" style="margin-top: 20px; opacity: 0.6; font-style: italic;">Kuch khaas hone wala hai...</p>
+    </div>
 
-    <section>
-        <h2>Digital Loot Box</h2>
-        <div class="gift-box" id="gift" onclick="openGift()">🎁</div>
-        <p id="msg">[ Tap the Box to Unlock ]</p>
-    </section>
+    <div class="page" id="p4">
+        <div class="dream-card">
+            <button class="main-btn" style="width:100%; margin-bottom:15px;" onclick="window.open('https://www.instagram.com/your__ri0')">Connect on Instagram</button>
+            <button class="main-btn" style="width:100%; margin-bottom:15px; background:transparent; border: 1.5px solid #ff85a2;" onclick="showPopup('about')">About Me</button>
+            <button class="main-btn" style="width:100%; background:#fff; color:#ff4d6d;" onclick="showPopup('shayari')">Special Shayari</button>
+        </div>
+    </div>
 
-    <section>
-        <h1>LEVEL UP! ⬆️</h1>
-        <p>Hope you liked this digital surprise!</p>
-        <button class="btn" onclick="showAbout()">Meet the Dev (Mikey)</button>
-        <br>
-        <a href="https://www.instagram.com/your__ri0" class="btn" style="font-size: 0.8rem;">Follow @your__ri0</a>
-    </section>
+    <div id="aboutPopup" class="overlay">
+        <div class="dream-card">
+            <h3 style="font-family:'Dancing Script'; font-size: 2rem; color: #ff85a2;">yo! im Mikey</h3>
+            <p style="margin: 25px 0; line-height: 1.7; color: #eee;">mere bare me kya hi jaanna mujhe samjhna muskil hai cutie me bahut uljha hua hu if tumhe pasand aya to insta button follow kar lena . <br><br> <b>"Wese acha laga ho to text karna😉</b></p>
+            <button class="main-btn" onclick="closePopup()">Wapas</button>
+        </div>
+    </div>
 
-    <div class="overlay" id="overlay" onclick="hideAbout()"></div>
-    <div id="aboutModal">
-        <span class="close-btn" onclick="hideAbout()">[X]</span>
-        <h3 style="color: var(--primary); margin-bottom: 15px;">Meet Mikey</h3>
-        <p style="font-family: sans-serif; font-size: 0.9rem; line-height: 1.5;">
-            Yo! I'm **Mikey**, hailing from **Ranchi**. I love building cool stuff and gaming. Since we crossed paths today in the arena, I thought why not make your day a bit more 'digital'? Stay awesome and keep winning! ⚡
-        </p>
+    <div id="shayariPopup" class="overlay">
+        <div class="dream-card">
+            <p style="font-style: italic; font-size: 1.2rem; line-height: 2.2; color: #ff85a2; font-family: 'Dancing Script';">
+                "Sitara hai tu, chamak teri nirali hai,<br>
+                Bin tere har khushi adhuri aur khali hai.<br>
+                Mubarak ho tujhe ye janamdin tera,<br>
+                Tu meri duniya ki sabse pyari Rani hai."
+            </p>
+            <button class="main-btn" onclick="closePopup()" style="margin-top: 25px;">Wapas</button>
+        </div>
     </div>
 
     <script>
-        // --- SIMPLE PARTICLE SYSTEM ---
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        window.onload = () => {
+            createStars();
+            setTimeout(() => {
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('p1').classList.add('active');
+            }, 3500);
+        };
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        function spawnParticles(e) {
-            for(let i=0; i<15; i++) {
-                particles.push({
-                    x: e.clientX,
-                    y: e.clientY,
-                    size: Math.random() * 4 + 1,
-                    speedX: (Math.random() - 0.5) * 10,
-                    speedY: (Math.random() - 0.5) * 10,
-                    color: '#00d4ff', // Default blue magic
-                    spicyColor: '#ff4500', // Spicy red magic
-                    isSpicy: Math.random() < 0.2, // Some particles will be spicy
-                    life: 1
-                });
+        function createStars() {
+            const container = document.getElementById('stars');
+            for(let i=0; i<60; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 3 + 'px';
+                s.style.width = size; s.style.height = size;
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.setProperty('--d', Math.random() * 3 + 2 + 's');
+                container.appendChild(s);
             }
         }
 
-        function update() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for(let i = 0; i < particles.length; i++) {
-                let p = particles[i];
-                p.x += p.speedX;
-                p.y += p.speedY;
-                p.life -= 0.02;
-                ctx.fillStyle = p.isSpicy ? `rgba(255, 69, 0, ${p.life})` : `rgba(0, 212, 255, ${p.life})`;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                ctx.fill();
-                if(p.life <= 0) {
-                    particles.splice(i, 1);
-                    i--;
-                }
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        let moveCount = 0;
+        function scramble() {
+            moveCount++;
+            const btn = document.getElementById('catch-btn');
+            if(moveCount < 3) {
+                btn.style.position = 'absolute';
+                btn.style.top = Math.random() * 70 + 15 + '%';
+                btn.style.left = Math.random() * 70 + 15 + '%';
+                btn.innerText = "Pakad ke dikhao!";
+            } else {
+                showPage('p2');
             }
-            requestAnimationFrame(update);
-        }
-        update();
-
-        // --- INTERACTION LOGIC ---
-        function openGift() {
-            const gift = document.getElementById('gift');
-            gift.innerHTML = "💎";
-            gift.style.transform = "scale(1.5)";
-            document.getElementById('msg').innerHTML = "RARE ITEM FOUND: <br> 'The Infinite Smile'";
         }
 
-        function showAbout() {
-            document.getElementById('aboutModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
+        function startCinematic() {
+            showPage('p3');
+            
+            const rain = setInterval(() => {
+                const f = document.createElement('div');
+                f.className = 'flower';
+                f.innerHTML = ["🌸", "✨", "💖", "🌷"][Math.floor(Math.random()*4)];
+                f.style.left = Math.random() * window.innerWidth + 'px';
+                f.style.top = '-50px';
+                document.body.appendChild(f);
+                f.animate([{ top: '-50px' }, { top: window.innerHeight + 'px', transform: `rotate(${Math.random()*360}deg)` }], { duration: 2500 });
+                setTimeout(() => f.remove(), 2500);
+            }, 200);
+
+            setTimeout(() => { document.getElementById('happy-title').style.opacity = '1'; }, 500);
+            setTimeout(() => { document.getElementById('cake-ui').style.display = 'block'; }, 1500);
+            
+            // Real Cutting Animation Logic
+            setTimeout(() => {
+                const knife = document.getElementById('knife-ui');
+                const cake = document.getElementById('cake-body');
+                const flame = document.getElementById('flame-ui');
+                
+                knife.style.opacity = '1';
+                knife.style.animation = "knifeCutAction 2.5s forwards";
+                document.getElementById('magic-text').innerText = "Cake kat raha hai...";
+
+                // Sync the cake cut and flame off
+                setTimeout(() => {
+                    cake.classList.add('cut'); // Visual cut line
+                    flame.style.display = 'none'; // Blow out candle
+                }, 1500);
+
+            }, 3000);
+
+            setTimeout(() => {
+                document.getElementById('magic-text').innerText = "Janmadin Mubarak, Ramya! ✨";
+            }, 6000);
+
+            setTimeout(() => {
+                clearInterval(rain);
+                showPage('p4');
+            }, 9000);
         }
 
-        function hideAbout() {
-            document.getElementById('aboutModal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
+        function showPopup(id) { document.getElementById(id + 'Popup').style.display = 'flex'; }
+        function closePopup() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
     </script>
 </body>
 </html>
